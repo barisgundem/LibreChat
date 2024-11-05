@@ -405,15 +405,16 @@ class StreamRunManager {
  */
   async generateAndLogFollowUpQuestions(userMessage, assistantResponse) {
     try {
-        const followUpPrompt = `Given the user's question: "${userMessage}" and the assistant's response: "${assistantResponse}", provide exactly 3 follow-up questions about the user's original question.
-        List the questions in the following format only:
+      const followUpPrompt = `Given the user's question: "${userMessage}" and the assistant's response: "${assistantResponse}", provide exactly 3 follow-up questions that suggest subareas or deeper aspects related to the user's original question. Focus on suggesting specific topics or aspects within the main area mentioned by the user.
 
-        FQ1: Question
-        FQ2: Question
-        FQ3: Question
-
-        Do not provide any other information or additional text.`;
-
+      List the questions in the following format only:
+      
+      FQ1: Add focus on [subarea or specific aspect]
+      FQ2: Add focus on [subarea or specific aspect]
+      FQ3: Add focus on [subarea or specific aspect]
+      
+      Do not provide any other information or additional text.`;
+      
         console.log("Requesting follow-up questions...");
 
         const followUpRequest = [

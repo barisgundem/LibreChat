@@ -21,7 +21,7 @@ function FollowUpQuestions({ index }: { index: number }) {
 
   return (
     <div className="p-4 rounded-lg border border-gray-600 shadow-md bg-gray-900 text-white relative">
-      <h4 className="text-lg font-semibold mb-2">Follow-up Questions</h4>
+      <h3 className="text-lg font-semibold mb-2">Follow-up Questions</h3>
       <Separator className="mb-3 border-gray-700" />
       <ul className="space-y-4">
         {followUpQuestions.map((question, idx) => (
