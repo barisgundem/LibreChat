@@ -105,34 +105,7 @@ async function getResponse({ openai, run_id, thread_id }) {
   const runInfo = JSON.stringify(run, null, 2);
   throw new Error(`Unexpected run status ${run.status}.\nFull run info:\n\n${runInfo}`);
 }
-/**
- * Generates follow-up questions based on the user message and the assistant's response.
- * @param {OpenAIClient} openai - The OpenAI client instance.
- * @param {string} userMessage - The text of the user's message.
- * @param {string} assistantResponse - The text of the assistant's response.
- * @returns {Promise<string[]>} - A list of follow-up questions.
- */
-async function generateFollowUpQuestions(openai, userMessage, assistantResponse) {
-  // Define the prompt for generating follow-up questions
-  const followUpPrompt = `Given the user's question: "${userMessage}" and the assistant's response: "${assistantResponse}", suggest 3 follow-up questions that the user might want to ask next.`;
 
-  // Set up the request for follow-up questions
-  const followUpRequest = {
-    model: 'text-davinci-003', // Specify the model; adjust based on available models
-    prompt: followUpPrompt,
-    max_tokens: 100,
-    n: 3,
-    stop: ["\n"]
-  };
-
-  // Send the prompt to OpenAI to generate follow-up questions
-  const response = await openai.createCompletion(followUpRequest);
-
-  // Extract the follow-up questions from the response
-  const followUpQuestions = response.choices.map(choice => choice.text.trim());
-  
-  return followUpQuestions;
-}
 
 /**
  * Filters the steps to keep only the most recent instance of each unique step.
@@ -441,10 +414,6 @@ async function runAssistant({
     // const { messages: sortedMessages, text } = await processMessages(openai, messages);
     // return { run, steps, messages: sortedMessages, text };
     const sortedMessages = messages.sort((a, b) => a.created_at - b.created_at);
-    const mainResponseText = openai.responseText; // Get the final response text
-    console.log("Generating follow-up questions...");
-    const followUpQuestions = await generateFollowUpQuestions(openai, req.body.text, mainResponseText);
-    console.log("Generated Follow-Up Questions:", followUpQuestions);
 
     
     return {
@@ -453,7 +422,6 @@ async function runAssistant({
       messages: sortedMessages,
       finalMessage: openai.responseMessage,
       text: openai.responseText,
-      followUpQuestions,
     };
   }
 

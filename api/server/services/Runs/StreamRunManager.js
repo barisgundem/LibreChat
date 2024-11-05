@@ -430,7 +430,7 @@ class StreamRunManager {
 
         const followUpQuestions = await this.openai.chat.completions.create({
             messages: followUpRequest,
-            model: "gpt-3.5-turbo", // Specify model if required
+            model: "gpt-4o-mini", // Specify model if required
         });
 
         // Remove the FQ prefixes
